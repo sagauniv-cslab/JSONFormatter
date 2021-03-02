@@ -8,4 +8,6 @@ public abstract class TableElement {
 	}
 
 	public abstract String toJSON();
+	public abstract boolean thisObject(String name);
+	public abstract String completeName();
 }

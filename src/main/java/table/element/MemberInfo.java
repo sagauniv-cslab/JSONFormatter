@@ -11,7 +11,7 @@ public class MemberInfo extends TableElement {
 
 	public MemberInfo(String name, ClassInfo classInfo) {
 		super(name);
-		this.completeClassName = classInfo.completeClassName();
+		this.completeClassName = classInfo.completeName();
 		refined = new ArrayList<>();
 	}
 
@@ -19,8 +19,16 @@ public class MemberInfo extends TableElement {
 		refined.add(member);
 	}
 
+	public String completeName() {
+		return String.join(".", completeClassName,name);
+	}
+
 	public boolean definedIn(String completeClassName) {
 		return this.completeClassName.equals(completeClassName);
+	}
+
+	public boolean thisObject(String completeMethodName) {
+		return this.completeName().equals(completeMethodName);
 	}
 
 	public String toJSON() {

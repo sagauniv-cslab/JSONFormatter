@@ -5,11 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import table.element.MemberInfo;
-import table.util.ParentDetector;
 import table.util.Searcher;
-import table.util.TableElement;
 
-public class MemberTable implements ParentDetector, Searcher {
+public class MemberTable extends AbstractTable<MemberInfo> implements  Searcher {
 
 	private List<MemberInfo> memberList;
 
@@ -18,7 +16,8 @@ public class MemberTable implements ParentDetector, Searcher {
 	}
 
 	@Override
-	public Optional<TableElement> getParent(String completeClassName) {
+	public Optional<List<MemberInfo>> getParent(String completeClassName) {
+
 		return null;
 	}
 
@@ -29,9 +28,15 @@ public class MemberTable implements ParentDetector, Searcher {
 	public List<MemberInfo> getMethods(String completeClassName) {
 		List<MemberInfo> definedMethods = new ArrayList<>();
 		for (MemberInfo member : memberList) {
-
+			if(member.definedIn(completeClassName))
+				definedMethods.add(member);
 		}
-		return null;
+		return definedMethods;
+	}
+
+	@Override
+	public void addElement(MemberInfo element) {
+		memberList.add(element);
 	}
 
 }
