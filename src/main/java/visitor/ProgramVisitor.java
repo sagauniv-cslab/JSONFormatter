@@ -39,12 +39,16 @@ public class ProgramVisitor extends VoidVisitorAdapter<String> implements JSONTr
 		currentClass = new ClassInfo(className, null, currentPackageName);
 		if (n.getExtendedTypes().size() > 0) {
 			n.getExtendedTypes().forEach(e -> {
-				currentClass.addParent(e.getNameAsString());
+				// 後で親子関係を解決するために，親クラス名と現在解析しているクラスとを紐付ける
+				// これは，Javaプログラムの解析が終了していないので，すべての親クラスの情報が取得できない可能性があるから
+				currentClass.addParentName(e.getNameAsString());
+				classTable.remindParentRelationship(currentClass, e.getNameAsString());
 			});
 		}
 		if (n.getImplementedTypes().size() > 0) {
 			n.getImplementedTypes().forEach(i -> {
-				currentClass.addParent(i.getNameAsString());
+				currentClass.addParentName(i.getNameAsString());
+				classTable.remindParentRelationship(currentClass,i.getNameAsString());
 			});
 		}
 		classTable.addElement(currentClass);
@@ -89,6 +93,7 @@ public class ProgramVisitor extends VoidVisitorAdapter<String> implements JSONTr
 
 	@Override
 	public String toJSON() {
+		classTable.resolveParentRelationship();
 		return new JSON(classTable, methodTable, variableTable).toJSON();
 	}
 }

@@ -16,9 +16,13 @@ public abstract class TableElement<T extends TableElement<T>> implements Matcher
 		return this.type.equals(type);
 	}
 
-	public abstract String completeName();
-
 	public Type getType() {
 		return type;
 	}
+
+	public boolean sameName(String name) {
+		return this.name.equals(name);
+	}
+
+	public abstract String completeName();
 }

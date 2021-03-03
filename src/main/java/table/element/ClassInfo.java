@@ -9,24 +9,35 @@ import table.util.TableElement;
 
 public class ClassInfo extends TableElement<ClassInfo> {
 	private String packageName;
-	private List<String> parent;
+	private List<String> parentNames;
+	private List<ClassInfo> parents;
 
 	public ClassInfo(String name, Type type, String packageName) {
 		super(name, type);
-		parent = new ArrayList<>();
 		this.packageName = packageName;
+		parentNames = new ArrayList<>();
+		parents = new ArrayList<>();
 	}
 
 	/**
-	 * 親クラスの名前を追加する
-	 * @param parentName 親クラスの完全修飾名
+	 * 親クラスの名前を追加する<br>
+	 * @apiNote すべてのクラスが解析し終わっていないので，親クラス名だけを渡す
+	 * @param parentName 親クラスの名前
 	 */
-	public void addParent(String parentName) {
-		parent.add(parentName);
+	public void addParentName(String parentName) {
+		parentNames.add(parentName);
 	}
 
-	public List<String> getParent() {
-		return parent;
+	public List<String> getParentNames() {
+		return parentNames;
+	}
+	
+	public void addParentObject(ClassInfo parent) {
+		parents.add(parent);
+	}
+	
+	public List<ClassInfo> getParents(){
+		return parents;
 	}
 
 	public boolean thisObject(String completeClassName) {
