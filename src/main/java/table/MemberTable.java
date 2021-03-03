@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.github.javaparser.ast.type.Type;
+
 import table.element.MemberInfo;
 import table.util.Searcher;
 
-public class MemberTable extends AbstractTable<MemberInfo> implements  Searcher {
+public class MemberTable extends AbstractTable<MemberInfo> implements Searcher {
 
 	private List<MemberInfo> memberList;
 
@@ -28,7 +30,7 @@ public class MemberTable extends AbstractTable<MemberInfo> implements  Searcher 
 	public List<MemberInfo> getMethods(String completeClassName) {
 		List<MemberInfo> definedMethods = new ArrayList<>();
 		for (MemberInfo member : memberList) {
-			if(member.definedIn(completeClassName))
+			if (member.definedIn(completeClassName))
 				definedMethods.add(member);
 		}
 		return definedMethods;
@@ -37,6 +39,15 @@ public class MemberTable extends AbstractTable<MemberInfo> implements  Searcher 
 	@Override
 	public void addElement(MemberInfo element) {
 		memberList.add(element);
+	}
+
+	@Override
+	public Optional<Type> getType(String completeName) {
+		for (MemberInfo member : memberList) {
+			if (member.thisObject(completeName))
+				return Optional.of(member.getType());
+		}
+		return Optional.empty();
 	}
 
 }

@@ -3,14 +3,16 @@ package table.element;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.javaparser.ast.type.Type;
+
 import table.util.TableElement;
 
-public class MemberInfo extends TableElement {
+public class MemberInfo extends TableElement<MemberInfo> {
 	private String completeClassName;
 	private List<MemberInfo> refined;
 
-	public MemberInfo(String name, ClassInfo classInfo) {
-		super(name);
+	public MemberInfo(String name, Type type, ClassInfo classInfo) {
+		super(name, type);
 		this.completeClassName = classInfo.completeName();
 		refined = new ArrayList<>();
 	}
@@ -20,18 +22,19 @@ public class MemberInfo extends TableElement {
 	}
 
 	public String completeName() {
-		return String.join(".", completeClassName,name);
+		return String.join(".", completeClassName, name);
 	}
 
 	public boolean definedIn(String completeClassName) {
 		return this.completeClassName.equals(completeClassName);
 	}
 
-	public boolean thisObject(String completeMethodName) {
-		return this.completeName().equals(completeMethodName);
-	}
-
 	public String toJSON() {
 		return "";
+	}
+
+	@Override
+	public boolean thisObject(String completeMethodName) {
+		return this.completeName().equals(completeMethodName);
 	}
 }

@@ -1,13 +1,24 @@
 package table.util;
 
-public abstract class TableElement {
-	protected String name;
+import com.github.javaparser.ast.type.Type;
 
-	public TableElement(String name) {
+public abstract class TableElement<T extends TableElement<T>> implements Matcher, JSONTransformer {
+	protected String name;
+	private Type type;
+
+	public TableElement(String name, Type type) {
 		this.name = name;
+		this.type = type;
 	}
 
-	public abstract String toJSON();
-	public abstract boolean thisObject(String name);
+	@Override
+	public boolean thisType(Type type) {
+		return this.type.equals(type);
+	}
+
 	public abstract String completeName();
+
+	public Type getType() {
+		return type;
+	}
 }

@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import table.element.ClassInfo;
 
-public class ClassTable extends AbstractTable<ClassInfo>{
+public class ClassTable extends AbstractTable<ClassInfo> {
 	private List<ClassInfo> classList;
 
 	public ClassTable() {
@@ -14,8 +14,8 @@ public class ClassTable extends AbstractTable<ClassInfo>{
 	}
 
 	public boolean hasParent(String completeClassName) {
-		for(ClassInfo classInfo : classList) {
-			if(classInfo.thisObject(completeClassName))
+		for (ClassInfo classInfo : classList) {
+			if (classInfo.thisObject(completeClassName))
 				return classInfo.getParent().size() > 0;
 		}
 		return false;
@@ -23,7 +23,16 @@ public class ClassTable extends AbstractTable<ClassInfo>{
 
 	@Override
 	public Optional<List<ClassInfo>> getParent(String completeClassName) {
-		return null;
+		List<ClassInfo> cList = new ArrayList<>();
+		// completeClassNameのClassInfoオブジェクトを取得
+		if (getClassInfo(completeClassName).isPresent()) {
+			if (getClassInfo(completeClassName).get().getParent().size() == 0)
+				// 親クラスがない場合
+				return Optional.empty();
+
+		}
+
+		return Optional.empty();
 	}
 
 	@Override
@@ -31,4 +40,18 @@ public class ClassTable extends AbstractTable<ClassInfo>{
 		classList.add(element);
 	}
 
+	private Optional<ClassInfo> getClassInfo(String completeClassName) {
+		for (ClassInfo classInfo : classList) {
+			if (classInfo.thisObject(completeClassName))
+				return Optional.of(classInfo);
+		}
+		return Optional.empty();
+	}
+
+	private Optional<List<ClassInfo>> getSameNameClassInfo(String name) {
+		List<ClassInfo> parentList = new ArrayList<>();
+		for (ClassInfo classInfo : classList) {
+		}
+		return null;
+	}
 }
